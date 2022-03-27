@@ -3,11 +3,12 @@ package by.it_academy.jd2.m_jd2_88_22.chat.model.hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "message_table")
-public class MessageHibernate {
+public class MessageHibernate implements Serializable {
 
     private Long id;
     private String recipient;

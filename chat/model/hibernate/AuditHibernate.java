@@ -1,35 +1,42 @@
 package by.it_academy.jd2.m_jd2_88_22.chat.model.hibernate;
 
-import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "audit_users")
-public class AuditHibernate {
+
+public class AuditHibernate implements Serializable {
+
 
     private Long id;
     private String text;
-    private String author;
+
+//    @MapsId("login")
+//    @ManyToOne
+
+    //    @OneToMany (mappedBy = "login", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JoinColumn (name="login")
+   @ManyToOne
+    private UserHibernate author;
+
     private LocalDateTime dt_create;
 
     public AuditHibernate() {
     }
 
-    public AuditHibernate(String text, String author, LocalDateTime dt_create) {
-
+    public AuditHibernate(Long id, String text, UserHibernate author, LocalDateTime dt_create) {
+        this.id = id;
         this.text = text;
         this.author = author;
+
         this.dt_create = dt_create;
     }
 
     @Id
-    @GeneratedValue(generator="increment")
-    @GenericGenerator(name="increment", strategy = "increment")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -46,11 +53,11 @@ public class AuditHibernate {
         this.text = text;
     }
 
-    public String getAuthor() {
+    public UserHibernate getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(UserHibernate author) {
         this.author = author;
     }
 

@@ -1,5 +1,6 @@
 package by.it_academy.jd2.m_jd2_88_22.chat.endpoints;
 
+import by.it_academy.jd2.m_jd2_88_22.chat.model.User;
 import by.it_academy.jd2.m_jd2_88_22.chat.view.UserService;
 import by.it_academy.jd2.m_jd2_88_22.chat.view.api.IUserService;
 
@@ -42,16 +43,16 @@ public class SignInServlet extends HttpServlet {
         String password = req.getParameter(PASSWORD);
 
 
-       boolean check = userService.checkLogin(login, password);
+       User userActive = userService.checkLogin(login, password);
 
-        if (!check) {
+        if (userActive==null) {
 
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/errorLog.jsp");
             requestDispatcher.forward(req, resp);
 
         }
 
-        userService.createSession(userService.getActiveUser(),req);
+        userService.createSession(userActive,req);
 
         resp.sendRedirect(req.getContextPath() + "/message");
 

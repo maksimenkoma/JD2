@@ -14,9 +14,9 @@
             Persistence unit for the JPA tutorial of the Hibernate Getting Started Guide
         </description>
 
-        <class>org.hibernate.tutorial.em.UserHibernate</class>
-        <class>org.hibernate.tutorial.em.MessageHibernate</class>
-        <class>org.hibernate.tutorial.em.AuditHibernate</class>
+        <class>by.it_academy.jd2.m_jd2_88_22.chat.model.hibernate.UserHibernate</class>
+        <class>by.it_academy.jd2.m_jd2_88_22.chat.model.hibernate.MessageHibernate</class>
+        <class>by.it_academy.jd2.m_jd2_88_22.chat.model.hibernate.AuditHibernate</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />

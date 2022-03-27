@@ -1,7 +1,9 @@
 package by.it_academy.jd2.m_jd2_88_22.chat.view;
+
 import by.it_academy.jd2.m_jd2_88_22.chat.model.Audit;
 import by.it_academy.jd2.m_jd2_88_22.chat.storage.api.FactoryStorage;
-import by.it_academy.jd2.m_jd2_88_22.chat.storage.api.IFactoryStorage;
+import by.it_academy.jd2.m_jd2_88_22.chat.storage.api.IAuditStorage;
+import by.it_academy.jd2.m_jd2_88_22.chat.storage.api.IUserStorage;
 import by.it_academy.jd2.m_jd2_88_22.chat.view.api.IUserService;
 import by.it_academy.jd2.m_jd2_88_22.chat.model.User;
 
@@ -11,18 +13,17 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 
 
-
 public class UserService implements IUserService {
 
     private static final UserService instance = new UserService();
 
-    private IFactoryStorage factoryStorage;
+    private IUserStorage storage;
+    private IAuditStorage auditStorage;
 
     public UserService() {
 
-        this.factoryStorage = FactoryStorage.getInstance();
-
-
+        this.storage = FactoryStorage.getInstance().getUserStorage();
+        this.auditStorage = FactoryStorage.getInstance().getAuditStorage();
     }
 
     @Override
@@ -31,11 +32,17 @@ public class UserService implements IUserService {
 
         boolean log = true;
 
-        if (factoryStorage.getHibernateStorage().getStorageUserHibernate().pullUserHibernate(userRaw) == null) {
+        if (storage.getUser(userRaw) == null) {
             log = false;
 
         }
         return log;
+    }
+
+    @Override
+    public User checkLogin(String login, String password) {
+
+        return storage.checkUser(login, password);
     }
 
 
@@ -59,59 +66,33 @@ public class UserService implements IUserService {
                 }
             }
         }
+        storage.saveUser(user);
+     auditStorage.saveAudit(new Audit("Регистрация", user, LocalDateTime.now()));
 
-        factoryStorage.getHibernateStorage().getStorageUserHibernate().saveUserHibernate(user);
-        factoryStorage.getHibernateStorage().getStorageAuditHibernate().saveAuditHibernate(new Audit("Регистрация", user.getLogin(), LocalDateTime.now()));
 
         return user;
     }
 
 
-    public boolean checkLogin(String login, String password) {
-
-        boolean log = false;
-
-        User user =
-                factoryStorage.getHibernateStorage().getStorageUserHibernate().pullUserHibernate(login, password);
-
-
-        if (user.getLogin().equals(login)) {
-
-            if (user.getPassword().equals(password)) {
-                factoryStorage.getStorageFactory().getStorageService().createActiveUser(user);
-                log = true;
-            }
-        }
-
-        return log;
-    }
-
-
     @Override
-    public void createSession(User activeUser, HttpServletRequest req) {
+    public void createSession(User userActive, HttpServletRequest req) {
 
         HttpSession session = req.getSession();
 
-        if (activeUser.getLogin() == null || activeUser.getPassword() == null) {
+        if (userActive.getLogin() == null || userActive.getPassword() == null) {
 
-            activeUser = (User) session.getAttribute("user");
+            userActive = (User) session.getAttribute("user");
 
-            if (activeUser.getLogin() == null || activeUser.getPassword() == null) {
+            if (userActive.getLogin() == null || userActive.getPassword() == null) {
 
                 throw new IllegalArgumentException("Не передан обязательный параметр");
             }
 
 
-        } else session.setAttribute("user", activeUser);
+        } else session.setAttribute("user", userActive);
 
     }
 
-    @Override
-    public User getActiveUser() {
-
-        return factoryStorage.getStorageFactory().getStorageService().getActiveUser();
-
-    }
 
     public static UserService getInstance() {
         return instance;

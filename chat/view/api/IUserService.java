@@ -10,10 +10,10 @@ public interface IUserService {
 
     User createUser(User userRaw);
 
-    boolean checkLogin(String login,String password);
+    User checkLogin(String login,String password);
 
     void createSession(User user, HttpServletRequest req);
 
-    User getActiveUser();
+
 
 }

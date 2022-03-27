@@ -1,9 +1,13 @@
 package by.it_academy.jd2.m_jd2_88_22.chat.view;
+
 import by.it_academy.jd2.m_jd2_88_22.chat.model.Message;
 import by.it_academy.jd2.m_jd2_88_22.chat.model.Pageable;
+import by.it_academy.jd2.m_jd2_88_22.chat.model.User;
 import by.it_academy.jd2.m_jd2_88_22.chat.storage.api.FactoryStorage;
-import by.it_academy.jd2.m_jd2_88_22.chat.storage.api.IFactoryStorage;
+import by.it_academy.jd2.m_jd2_88_22.chat.storage.api.IMessageStorage;
+import by.it_academy.jd2.m_jd2_88_22.chat.storage.hibernate.StorageMessageHibernate;
 import by.it_academy.jd2.m_jd2_88_22.chat.view.api.IMessageService;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,40 +20,35 @@ public class MessageService implements IMessageService {
 
     private static final MessageService instance = new MessageService();
 
-    private IFactoryStorage factoryStorage;
+    private IMessageStorage storage;
 
     public MessageService() {
 
-        this.factoryStorage = FactoryStorage.getInstance();
+        this.storage = FactoryStorage.getInstance().getMessageStorage();
     }
 
 
     @Override
-    public void sendMessage(Message message) {
+    public void sendMessage(Message message, User userActive) {
 
-
-        factoryStorage.getHibernateStorage().getStorageMessageHibernate().saveMessageHibernate(message,
-                factoryStorage.getStorageFactory().getStorageService().getActiveUser());
+        storage.saveMessage(message, userActive);
 
     }
 
     @Override
-    public void historyMessage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void historyMessage(HttpServletRequest req, HttpServletResponse resp, User userActive) throws ServletException, IOException {
 
-        historyMessage(req, resp, null);
+        historyMessage(req, resp, userActive, null);
     }
 
 
     @Override
-    public void historyMessage(HttpServletRequest req, HttpServletResponse resp, Pageable pageable) throws ServletException, IOException {
+    public void historyMessage(HttpServletRequest req, HttpServletResponse resp, User userActive, Pageable pageable) throws ServletException, IOException {
 
-        List<Message> messages =
-
-                factoryStorage.getHibernateStorage().getStorageMessageHibernate().
-                        getHistoryMessageHibernate(factoryStorage.getStorageFactory().getStorageService().getActiveUser(), pageable);
+        List<Message> messages = storage.getHistoryMessage(userActive, pageable);
 
 
-        req.setAttribute("user", factoryStorage.getStorageFactory().getStorageService().getActiveUser().getLogin());
+        req.setAttribute("user", userActive.getLogin());
 
         req.setAttribute("history", messages);
 

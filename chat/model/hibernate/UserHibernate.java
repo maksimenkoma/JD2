@@ -1,26 +1,30 @@
 package by.it_academy.jd2.m_jd2_88_22.chat.model.hibernate;
 
-import org.hibernate.annotations.GenericGenerator;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+
+import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 
 @Entity
 @Table(name = "user_table")
-public class UserHibernate {
+public class UserHibernate implements Serializable {
 
 
+    @Id
+    @OneToMany
     private String login;
+
     private String password;
     private String firstName;
     private String lastName;
     private String middleName;
     private LocalDate dateBirth;
-    private Long id;
+
+//    @Id
+//    @GeneratedValue(generator="increment")
+//    @GenericGenerator(name="increment", strategy = "increment")
+//    private Long id;
 
     public UserHibernate() {
     }
@@ -33,17 +37,15 @@ public class UserHibernate {
         this.middleName = middleName;
         this.dateBirth = dateBirth;
     }
+//
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
-    @Id
-    @GeneratedValue(generator="increment")
-    @GenericGenerator(name="increment", strategy = "increment")
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getLogin() {
         return login;

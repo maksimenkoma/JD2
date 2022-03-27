@@ -1,30 +1,25 @@
-package by.it_academy.jd2.m_jd2_88_22.chat.storage.db.api;
+package by.it_academy.jd2.m_jd2_88_22.chat.storage.memory.api;
 
 import by.it_academy.jd2.m_jd2_88_22.chat.storage.api.IAuditStorage;
 import by.it_academy.jd2.m_jd2_88_22.chat.storage.api.IFactoryStorage;
 import by.it_academy.jd2.m_jd2_88_22.chat.storage.api.IMessageStorage;
 import by.it_academy.jd2.m_jd2_88_22.chat.storage.api.IUserStorage;
-import by.it_academy.jd2.m_jd2_88_22.chat.storage.db.StorageAuditDB;
-import by.it_academy.jd2.m_jd2_88_22.chat.storage.db.StorageMessageDB;
-import by.it_academy.jd2.m_jd2_88_22.chat.storage.db.StorageUserDB;
+import by.it_academy.jd2.m_jd2_88_22.chat.storage.memory.StorageAuditMemory;
+import by.it_academy.jd2.m_jd2_88_22.chat.storage.memory.StorageMessageMemory;
+import by.it_academy.jd2.m_jd2_88_22.chat.storage.memory.StorageUserMemory;
 
+public class MemoryFactoryStorage implements IFactoryStorage {
 
-public class DBFactoryStorage implements IFactoryStorage {
-
-
-    private static final DBFactoryStorage instance = new DBFactoryStorage();
-
+    private static final MemoryFactoryStorage instance = new MemoryFactoryStorage();
 
     private IUserStorage userStorage;
     private IMessageStorage messageStorage;
     private IAuditStorage auditStorage;
 
-
-    public DBFactoryStorage() {
-
-        this.userStorage= StorageUserDB.getInstance();
-        this.messageStorage= StorageMessageDB.getInstance();
-        this.auditStorage = StorageAuditDB.getInstance();
+    public MemoryFactoryStorage() {
+        this.userStorage= StorageUserMemory.getInstance();
+        this.messageStorage= StorageMessageMemory.getInstance();
+        this.auditStorage = StorageAuditMemory.getInstance();
 
     }
 
@@ -43,9 +38,8 @@ public class DBFactoryStorage implements IFactoryStorage {
         return this.auditStorage;
     }
 
-    public static DBFactoryStorage getInstance() {
+    public static MemoryFactoryStorage getInstance() {
         return instance;
     }
+
 }
-
-

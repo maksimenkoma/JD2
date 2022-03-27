@@ -2,10 +2,12 @@ package by.it_academy.jd2.m_jd2_88_22.chat.model;
 
 import by.it_academy.jd2.m_jd2_88_22.demo.model.FlightFilter;
 
+import javax.persistence.Id;
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class User {
+
 
     private String login;
     private String password;

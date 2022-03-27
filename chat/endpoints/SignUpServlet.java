@@ -55,7 +55,7 @@ public class SignUpServlet extends HttpServlet {
                 setLastName(lastName).setMiddleName(middleName).
                 setDateBirth(LocalDate.parse(date)).build();
 
-        if (!userService.checkUsers(userRaw)) {
+        if (userService.checkUsers(userRaw)) {
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/errorReg.jsp");
             requestDispatcher.forward(req, resp);
 

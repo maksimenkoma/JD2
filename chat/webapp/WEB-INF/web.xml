@@ -13,6 +13,6 @@
     </servlet-mapping>
 
     <listener>
-<!--<listener-class>by.it_academy.jd2.m_jd2_88_22.web.PolReadWrite</listener-class>-->
+<listener-class>by.it_academy.jd2.m_jd2_88_22.chat.endpoints.listener.ChatListener</listener-class>
     </listener>
 </web-app>

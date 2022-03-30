@@ -50,18 +50,12 @@ public class StorageUserHibernate implements IUserStorage {
         List<UserHibernate> resultList = entityManager.createQuery(query).getResultList();
         entityManager.getTransaction().commit();
         entityManager.close();
-        if (resultList.isEmpty()) {
+        if (!resultList.isEmpty()) {
             user = null;
 
-        } else {
-            for (UserHibernate userHibernate : resultList) {
-
-                user = UserHibernateChangeUser(userHibernate);
-
-            }
         }
-        return user;
 
+        return user;
     }
 
 

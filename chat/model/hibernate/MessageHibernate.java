@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "message_table")
-public class MessageHibernate implements Serializable {
+public class MessageHibernate {
 
     private Long id;
     private String recipient;

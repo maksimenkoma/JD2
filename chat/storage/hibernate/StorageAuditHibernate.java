@@ -35,7 +35,12 @@ public class StorageAuditHibernate implements IAuditStorage {
 
         EntityManager entityManager = hb.getManager();
         entityManager.getTransaction().begin();
-        entityManager.persist(auditChangeAuditHibernate(audit));
+        AuditHibernate auditHibernate = new AuditHibernate();
+        UserHibernate userHibernate = entityManager.find(UserHibernate.class, audit.getAuthor().getLogin());
+        auditHibernate.setAuthor(userHibernate);
+        auditHibernate.setText(audit.getText());
+        auditHibernate.setDt_create(audit.getDt_create());
+        entityManager.persist(auditHibernate);
         entityManager.getTransaction().commit();
         entityManager.close();
 
@@ -85,7 +90,7 @@ public class StorageAuditHibernate implements IAuditStorage {
 
         AuditHibernate auditHibernate = new AuditHibernate();
 
-        auditHibernate.setId(audit.getId());
+    //    auditHibernate.setId(audit.getId());
         auditHibernate.setText(audit.getText());
 
         auditHibernate.setAuthor(new UserHibernate(audit.getAuthor().getLogin(), audit.getAuthor().getPassword(),

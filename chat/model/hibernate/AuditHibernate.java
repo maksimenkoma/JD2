@@ -8,18 +8,16 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "audit_users")
 
-public class AuditHibernate implements Serializable {
+public class AuditHibernate {
 
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String text;
 
-//    @MapsId("login")
-//    @ManyToOne
 
-    //    @OneToMany (mappedBy = "login", cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JoinColumn (name="login")
    @ManyToOne
+   @JoinColumn(name = "author")
     private UserHibernate author;
 
     private LocalDateTime dt_create;
@@ -35,8 +33,7 @@ public class AuditHibernate implements Serializable {
         this.dt_create = dt_create;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     public Long getId() {
         return id;
     }

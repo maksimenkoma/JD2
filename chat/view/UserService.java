@@ -67,7 +67,7 @@ public class UserService implements IUserService {
             }
         }
         storage.saveUser(user);
-     auditStorage.saveAudit(new Audit("Регистрация", user, LocalDateTime.now()));
+        auditStorage.saveAudit(new Audit("Регистрация", user, LocalDateTime.now()));
 
 
         return user;
